@@ -14,6 +14,8 @@ import {VyraStyleFrames} from './compositions/VyraTeaser/StyleFrames';
 import {VyraTeaser} from './compositions/VyraTeaser/VyraTeaser';
 import {DURATION as VYRA_DURATION} from './compositions/VyraTeaser/edit';
 import {VyraFeedPost} from './compositions/VyraTeaser/FeedPost';
+import {VyraClub} from './compositions/VyraClub/VyraClub';
+import {DURATION as VYRA_CLUB_DURATION} from './compositions/VyraClub/theme';
 
 export const Root = () => {
   return (
@@ -45,6 +47,17 @@ export const Root = () => {
         id="VyraTeaser-StyleFrames"
         component={VyraStyleFrames}
         durationInFrames={3}
+        fps={30}
+        width={1080}
+        height={1920}
+        defaultProps={{}}
+      />
+
+      {/* === VYRA — « Chaque table a une vue », vidéo pro pour les clubs (30 s, Reels, Lumen Club démo) === */}
+      <Composition
+        id="VyraClub"
+        component={VyraClub}
+        durationInFrames={VYRA_CLUB_DURATION}
         fps={30}
         width={1080}
         height={1920}
