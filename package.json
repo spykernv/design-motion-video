@@ -1,0 +1,49 @@
+{
+  "name": "design-motion-video",
+  "version": "1.0.0",
+  "description": "Studio de motion design et de vidéos générées par code avec Remotion",
+  "private": true,
+  "scripts": {
+    "dev": "remotion studio",
+    "studio": "remotion studio",
+    "render": "remotion render",
+    "still": "remotion still",
+    "compositions": "remotion compositions",
+    "upgrade": "remotion upgrade",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@react-three/drei": "10.7.7",
+    "@react-three/fiber": "9.6.1",
+    "@react-three/postprocessing": "3.0.4",
+    "@remotion/captions": "4.0.471",
+    "@remotion/cli": "4.0.471",
+    "@remotion/gif": "4.0.471",
+    "@remotion/google-fonts": "4.0.471",
+    "@remotion/layout-utils": "4.0.471",
+    "@remotion/lottie": "4.0.471",
+    "@remotion/media": "4.0.471",
+    "@remotion/media-utils": "4.0.471",
+    "@remotion/motion-blur": "4.0.471",
+    "@remotion/paths": "4.0.471",
+    "@remotion/preload": "4.0.471",
+    "@remotion/rounded-text-box": "4.0.471",
+    "@remotion/sfx": "4.0.471",
+    "@remotion/shapes": "4.0.471",
+    "@remotion/tailwind-v4": "4.0.471",
+    "@remotion/three": "4.0.471",
+    "@remotion/transitions": "4.0.471",
+    "@types/three": "0.185.0",
+    "postprocessing": "6.39.2",
+    "react": "19.2.0",
+    "react-dom": "19.2.0",
+    "remotion": "4.0.471",
+    "remotion-bits": "^0.2.0",
+    "three": "0.185.1"
+  },
+  "devDependencies": {
+    "@types/react": "19.2.0",
+    "tailwindcss": "4.3.0",
+    "typescript": "5.9.2"
+  }
+}

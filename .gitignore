@@ -1,0 +1,42 @@
+# Dépendances
+node_modules/
+
+# Sorties de rendu Remotion
+out/
+build/
+
+# Cache Remotion / bundler
+.remotion/
+
+# Séquences d'images rendues par Blender : lourdes, se régénèrent avec les scripts de blender/
+public/*/chateau/
+public/*/seq/
+
+# Teaser VYRA v1 (remplacé par la v2, plus utilisé par le code)
+public/vyra-teaser/monolith.png
+public/vyra-teaser/ferro_black.png
+public/vyra-teaser/door_*.png
+
+# Projets privés : compositions et assets qui ne quittent pas ce poste (entrée : src/private/index.ts)
+src/private/
+public/plania/
+public/logos/
+public/sfx/
+
+# Python
+__pycache__/
+
+# Logs
+*.log
+npm-debug.log*
+
+# Environnement
+.env
+.env.local
+
+# OS / éditeurs
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/*
+!.vscode/extensions.json
