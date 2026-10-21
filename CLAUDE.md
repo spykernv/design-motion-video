@@ -3,6 +3,8 @@
 > Ce fichier est le **point d'entrée pour toute IA** qui travaille dans ce repo.
 > Lis-le en entier avant de produire du code. Il définit comment ce projet
 > fonctionne, les règles non négociables, et le workflow pour créer une vidéo.
+>
+> **Dépôt tout juste cloné ?** Suivre d'abord [ONBOARDING.md](ONBOARDING.md) : installation et vidéo test.
 
 ## 1. Ce qu'est ce projet
 
