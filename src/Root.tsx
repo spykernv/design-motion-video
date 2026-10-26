@@ -16,10 +16,82 @@ import {DURATION as VYRA_DURATION} from './compositions/VyraTeaser/edit';
 import {VyraFeedPost} from './compositions/VyraTeaser/FeedPost';
 import {VyraClub} from './compositions/VyraClub/VyraClub';
 import {DURATION as VYRA_CLUB_DURATION} from './compositions/VyraClub/theme';
+import {Guest, GUEST_DURATION} from './compositions/VyraSite/Guest';
+import {Inbox, INBOX_DURATION} from './compositions/VyraSite/Inbox';
+import {Board, BOARD_DURATION} from './compositions/VyraSite/Admin';
+import {Offers, OFFERS_DURATION} from './compositions/VyraSite/Offers';
+import {LumenScreen, SCREEN_DURATION} from './compositions/VyraSite/LumenScreen';
+import {Brand, BRAND_DURATION} from './compositions/VyraSite/Brand';
+import {Clients, CLIENTS_DURATION} from './compositions/VyraSite/Clients';
 
 export const Root = () => {
   return (
     <>
+      {/* === VYRA — le site, « Ce qui se passe ensuite » : les écrans de l'app sur un téléphone (390 × 844, --scale=2) === */}
+      <Composition
+        id="VyraSite-Brand"
+        component={Brand}
+        durationInFrames={BRAND_DURATION}
+        fps={30}
+        width={720}
+        height={900}
+        defaultProps={{}}
+      />
+      <Composition
+        id="VyraSite-LumenScreen"
+        component={LumenScreen}
+        durationInFrames={SCREEN_DURATION}
+        fps={30}
+        width={1200}
+        height={400}
+        defaultProps={{}}
+      />
+      <Composition
+        id="VyraSite-Guest"
+        component={Guest}
+        durationInFrames={GUEST_DURATION}
+        fps={30}
+        width={390}
+        height={844}
+        defaultProps={{}}
+      />
+      <Composition
+        id="VyraSite-Inbox"
+        component={Inbox}
+        durationInFrames={INBOX_DURATION}
+        fps={30}
+        width={390}
+        height={844}
+        defaultProps={{}}
+      />
+      <Composition
+        id="VyraSite-Board"
+        component={Board}
+        durationInFrames={BOARD_DURATION}
+        fps={30}
+        width={390}
+        height={844}
+        defaultProps={{}}
+      />
+      <Composition
+        id="VyraSite-Offers"
+        component={Offers}
+        durationInFrames={OFFERS_DURATION}
+        fps={30}
+        width={390}
+        height={844}
+        defaultProps={{}}
+      />
+      <Composition
+        id="VyraSite-Clients"
+        component={Clients}
+        durationInFrames={CLIENTS_DURATION}
+        fps={30}
+        width={390}
+        height={844}
+        defaultProps={{}}
+      />
+
       {/* === VYRA — « La Porte », teaser de lancement (30 s, Reels) === */}
       <Composition
         id="VyraTeaser"
