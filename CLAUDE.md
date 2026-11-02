@@ -57,9 +57,26 @@ Les règles critiques à ne jamais enfreindre :
   **≤ 3 employés**, les non-profits, ou l'évaluation non commerciale. Au-delà, licence
   entreprise requise. → https://www.remotion.dev/docs/license
 
+## 2ter. Les skills du studio
+
+| Skill | Quand |
+|---|---|
+| **`studio-video`** (maison, `.claude/skills/studio-video/`) | Toute vidéo à créer, refaire, modifier ou décliner : la méthode du studio, de l'entretien au rendu final (brief et storyboard validés, contrôle des images, formats). **À suivre pour toute nouvelle vidéo.** |
+| **`remotion-best-practices`** (officielle, Remotion) | Le détail d'une API : audio, sous-titres, transitions, polices, 3D, vidéos transparentes, ffmpeg. |
+| **`video-use`** (Browser Use) | Monter des rushes filmés : transcrire, couper les hésitations et les silences, étalonner, sous-titrer (§ 8). |
+
+- Les skills externes s'installent et se mettent à jour avec `npx skills` (sources dans `skills-lock.json`) :
+  `npx skills update`. Ne pas les modifier à la main, une mise à jour écraserait le changement : ce qui est propre
+  au studio va dans ce fichier ou dans `studio-video`.
+- Les skills HyperFrames (HTML + GSAP) ne sont pas installées, exprès : elles visent un autre moteur et se
+  déclarent prioritaires pour toute demande de vidéo.
+
 ## 3. Workflow : créer une nouvelle vidéo
 
-1. Créer un dossier `src/compositions/<NomDeLaVideo>/`.
+**Suivre la skill `studio-video`** : entretien, `BRIEF.md` validé, `STORYBOARD.md` validé, construction, contrôle
+des images, brouillon montré, final et déclinaisons. Les étapes techniques de la construction :
+
+1. Créer un dossier `src/compositions/<NomDeLaVideo>/` (projet confidentiel : `src/private/compositions/`, § 6).
 2. Y écrire le composant principal (voir [HelloWorld](src/compositions/HelloWorld/HelloWorld.tsx) comme modèle).
 3. **Enregistrer** la composition dans [`src/Root.tsx`](src/Root.tsx) avec un `id` **unique**
    (`durationInFrames`, `fps`, `width`, `height`, `defaultProps`).
@@ -102,23 +119,35 @@ Conséquences à garder en tête :
 ```
 .
 ├── CLAUDE.md                      # Ce fichier — règles IA, à lire en premier
+├── ONBOARDING.md                  # Première vidéo test après un clone
 ├── README.md                      # Présentation humaine du repo
 ├── package.json                   # Dépendances + scripts
 ├── remotion.config.ts             # Config Studio/rendu (Tailwind activé ici)
+├── skills-lock.json               # Sources des skills externes (`npx skills`)
 ├── tsconfig.json
 ├── src/
 │   ├── index.ts                   # Point d'entrée (registerRoot) — ne pas modifier
 │   ├── Root.tsx                   # Registre des compositions (<Composition>)
 │   ├── index.css                  # Import Tailwind
-│   └── compositions/              # Une vidéo = un dossier ici
-│       └── HelloWorld/HelloWorld.tsx   # Modèle de référence
-├── public/                        # Assets statiques → staticFile('...')
+│   ├── compositions/              # Une vidéo = un dossier ici (BRIEF.md, STORYBOARD.md, composants)
+│   │   └── HelloWorld/HelloWorld.tsx   # Modèle de référence
+│   └── private/                   # Projets privés, ignorés par git (entrée : src/private/index.ts)
+├── public/                        # Assets statiques → staticFile('...') ; public/private/ ignoré par git
+├── scripts/                       # Analyse de musique, mixage, films de l'app (un dossier par vidéo)
+├── blender/                       # Plans 3D rendus par script (Blender)
 ├── docs/
 │   ├── remotion-rules.md          # Référence API Remotion (autorité rapide)
 │   └── references/                # Réfs ajoutées au fil de l'eau par l'utilisateur
-├── .claude/skills/                # Skill officiel remotion-best-practices (Claude Code)
-└── .agents/skills/                # Même skill, format multi-agents (géré par `npx skills`)
+├── rushes/                        # Rushes filmés pour video-use, ignorés par git (§ 8)
+├── out/                           # Rendus, ignorés par git
+├── .claude/skills/                # studio-video (maison), remotion-best-practices, video-use
+└── .agents/skills/                # remotion-best-practices, format multi-agents (géré par `npx skills`)
 ```
+
+**Le dépôt est public.** Une vidéo de client ou confidentielle vit dans `src/private/` : `src/private/index.ts`
+enregistre `src/private/Root.tsx`, qui reprend le `Root` partagé et ajoute les compositions privées. Studio :
+`npx remotion studio src/private/index.ts` ; rendu : `npx remotion render src/private/index.ts <id> out/<id>.mp4`.
+Ses assets vont dans `public/private/<projet>/`. Rien de tout cela n'est commité.
 
 ## 7. Avant de livrer du code
 
@@ -126,8 +155,34 @@ Conséquences à garder en tête :
 - [ ] Aucun `Math.random()` / `Date.now()` / timer JS.
 - [ ] `interpolate()` avec clamp.
 - [ ] `npm run typecheck` passe.
+- [ ] Les images ont été regardées (planche de contrôle de `studio-video` ouverte avec `Read`) : un typecheck
+      vert ne prouve pas que la vidéo est bonne.
+- [ ] `git status` ne liste rien de privé (projet client, assets sous licence, rushes).
 - [ ] Si l'utilisateur veut « voir » : proposer un rendu (`render`/`still`) ou
       le lien `localhost:3000` du Studio.
+
+## 8. Monter des rushes filmés (video-use)
+
+`video-use` monte une vidéo filmée par la conversation : transcription au mot près (ElevenLabs Scribe), stratégie de
+coupe validée avec l'utilisateur, hésitations et silences retirés, étalonnage, sous-titres, son normalisé. Sa skill
+(`.claude/skills/video-use/SKILL.md`) donne la méthode ; ce qui suit l'adapte au studio et l'emporte sur elle.
+
+- **Prérequis, une fois par poste** : [`uv`](https://docs.astral.sh/uv/), `ffmpeg` et `ffprobe` dans le PATH, et une
+  clé ElevenLabs. L'utilisateur écrit lui-même sa clé dans `.env` à la racine du dépôt (`ELEVENLABS_API_KEY=…`,
+  fichier ignoré par git) : ne jamais la demander dans la conversation ni l'afficher. L'environnement Python se crée
+  seul au premier lancement.
+- **Lancer un script**, depuis la racine du dépôt (Bash comme PowerShell) :
+  `uv run --project .claude/skills/video-use python .claude/skills/video-use/helpers/<script>.py …`
+  (`transcribe.py`, `transcribe_batch.py`, `pack_transcripts.py`, `timeline_view.py`, `render.py`, `grade.py`).
+- **Les rushes** vont dans `rushes/<projet>/`, ignoré par git : ils sont lourds, souvent privés, et le dépôt est
+  public. video-use écrit son travail dans `rushes/<projet>/edit/`. La transcription coûte des crédits : elle est
+  gardée en cache, ne jamais la relancer sur un fichier inchangé.
+- **Les animations d'un montage** sont des compositions de ce studio, faites avec `studio-video`, et non un projet
+  Remotion créé dans le dossier du slot comme video-use le propose. Les rendre aux dimensions et à la cadence du
+  montage, vers `rushes/<projet>/edit/animations/slot_<id>/render.mp4`, ou en `.mov` ProRes 4444 avec transparence
+  pour un habillage posé sur l'image (`rules/transparent-videos.md` de remotion-best-practices).
+- **L'analyse de musique** du studio (`scripts/vyra-teaser/analyse.py`, librosa) tourne dans le même environnement :
+  `uv run --project .claude/skills/video-use python scripts/vyra-teaser/analyse.py <musique> <timing.json>`.
 
 ---
 *Pour les détails d'API (Sequence, spring, transitions, Lambda, etc.) → [docs/remotion-rules.md](docs/remotion-rules.md).*

@@ -82,5 +82,7 @@ Demande à la personne une phrase courte (sinon : « Ma première vidéo »), pu
 
 ## Pour aller plus loin
 
-Une vraie vidéo suit le workflow de [CLAUDE.md](CLAUDE.md) : storyboard (`STORYBOARD.md`) validé avant le code,
-montage calé sur la musique, contrôle d'images avant livraison. Exemple complet : `src/compositions/VyraTeaser/`.
+Une vraie vidéo suit la skill `studio-video` (`.claude/skills/studio-video/`) : brief et storyboard validés avant le
+code, montage calé sur la musique, contrôle des images avant livraison. Exemple complet :
+`src/compositions/VyraTeaser/`. Pour monter des rushes filmés (interview, prise de parole) : `video-use`, voir
+[CLAUDE.md](CLAUDE.md) § 8.

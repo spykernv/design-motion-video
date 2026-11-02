@@ -31,6 +31,8 @@ Exemple : `npm run render HelloWorld out/hello.mp4`
 Ce repo est structuré pour qu'un agent IA sache quoi lire :
 
 - **[CLAUDE.md](CLAUDE.md)** — règles et workflow (à lire en premier).
+- **[.claude/skills/](.claude/skills/)** — les skills du studio : `studio-video` (la méthode maison, de l'idée au
+  MP4), `remotion-best-practices` (l'API Remotion) et `video-use` (le montage de rushes filmés).
 - **[docs/remotion-rules.md](docs/remotion-rules.md)** — référence API Remotion complète.
 - **[docs/references/](docs/references/)** — références ajoutées au fil du temps.
 
