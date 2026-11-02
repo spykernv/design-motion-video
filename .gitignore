@@ -19,6 +19,7 @@ public/vyra-teaser/door_*.png
 
 # Projets privés : compositions et assets qui ne quittent pas ce poste (entrée : src/private/index.ts)
 src/private/
+public/private/
 public/plania/
 public/logos/
 public/sfx/
