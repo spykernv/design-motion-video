@@ -23,8 +23,15 @@ public/plania/
 public/logos/
 public/sfx/
 
+# Rushes filmés et montages video-use : lourds, souvent privés (CLAUDE.md § 8)
+rushes/
+
 # Python
 __pycache__/
+
+# video-use : environnement Python et verrou uv, recréés sur chaque poste
+.claude/skills/video-use/.venv/
+.claude/skills/video-use/uv.lock
 
 # Logs
 *.log

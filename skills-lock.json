@@ -6,6 +6,13 @@
       "sourceType": "github",
       "skillPath": "skills/remotion/SKILL.md",
       "computedHash": "d9457a606202a23c28b4c17b2611c65ecc09311ce46a5d93ffe8493d2e8ea4f3"
+    },
+    "video-use": {
+      "source": "browser-use/video-use",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "66ec60f8d5f2f45adb11db8f5fe181a697f692be9e09067aac54cc9cc60c2fd5",
+      "installMode": "copy"
     }
   }
 }
