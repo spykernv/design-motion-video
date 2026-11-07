@@ -7,8 +7,8 @@ import {AbsoluteFill, Sequence, useCurrentFrame} from 'remotion';
 
 import {Button, LABEL_SPACE, NightPage, RequestRow, SortMenu, SortSelect} from './Admin';
 import {NIGHT, NIGHT_FILE, REACH, REQUESTS, TABLE, VISITS} from './data';
-import {ADMIN, GLASS, JOST, tween} from './theme';
-import {Icon, Screen, Tap} from './ui';
+import {ADMIN, DS, glow, INTER, light, tween} from './theme';
+import {Icon, Screen, SideLabel, Tap} from './ui';
 
 export const CLIENTS_DURATION = 480;
 
@@ -40,16 +40,7 @@ function FadeIn({children}: {children: ReactNode}) {
 function Label() {
   const frame = useCurrentFrame();
   const scene = [...SCENES].reverse().find((s) => frame >= s.from) ?? SCENES[0];
-  return (
-    <div style={{position: 'absolute', top: 10, left: 0, right: 0, display: 'flex', justifyContent: 'center', zIndex: 10, fontFamily: JOST}}>
-      <div style={{display: 'flex', alignItems: 'center', height: 26, borderRadius: 13, overflow: 'hidden', fontSize: 11.5, fontWeight: 600, letterSpacing: '0.06em', boxShadow: '0 6px 20px rgb(0 0 0 / 0.35)'}}>
-        <span style={{padding: '0 10px', height: '100%', display: 'flex', alignItems: 'center', background: '#e8c27a', color: '#14100a'}}>CÔTÉ CLUB</span>
-        <span style={{padding: '0 12px', height: '100%', display: 'flex', alignItems: 'center', background: 'rgb(22 19 27 / 0.92)', color: '#f5f4f7', fontWeight: 500, letterSpacing: 0}}>
-          {SCENES.indexOf(scene) + 1} · {scene.text}
-        </span>
-      </div>
-    </div>
-  );
+  return <SideLabel club text={`${SCENES.indexOf(scene) + 1} · ${scene.text}`} />;
 }
 
 const press = (frame: number, at: number) => tween(frame, [at - 5, at], [0, 1]) * (1 - tween(frame, [at + 2, at + 8], [0, 1]));
@@ -75,7 +66,7 @@ function Followers() {
     {request: ines, before: 2, after: 2},
   ];
   return (
-    <AbsoluteFill style={{background: ADMIN.background, fontFamily: JOST, color: ADMIN.label}}>
+    <AbsoluteFill style={{background: ADMIN.background, fontFamily: INTER, color: ADMIN.label}}>
       <div style={{padding: `${22 + dy}px 16px 0`}}>
         <div style={{fontSize: 18, fontWeight: 600}}>Demandes · Table {TABLE.label}</div>
         <div style={{fontSize: 13, color: ADMIN.muted}}>3 demandes · {NIGHT.name}</div>
@@ -121,15 +112,15 @@ function Stat({label, value, lit = 0}: {label: string; value: string; lit?: numb
     <div
       style={{
         flex: 1,
-        border: `1px solid ${lit > 0.01 ? `rgb(232 194 122 / ${0.3 + 0.5 * lit})` : ADMIN.border}`,
+        border: `1px solid ${lit > 0.01 ? light(0.3 + 0.5 * lit) : ADMIN.border}`,
         borderRadius: 10,
         padding: '8px 10px',
-        background: lit > 0.01 ? `rgb(232 194 122 / ${0.1 * lit})` : ADMIN.card,
-        boxShadow: lit > 0.01 ? `0 0 ${22 * lit}px rgb(232 194 122 / ${0.35 * lit})` : 'none',
+        background: lit > 0.01 ? light(0.07 * lit) : ADMIN.card,
+        boxShadow: lit > 0.01 ? `0 0 ${22 * lit}px ${glow(0.35 * lit)}` : 'none',
       }}
     >
       <div style={{fontSize: 11, color: ADMIN.muted}}>{label}</div>
-      <div style={{fontSize: 22, fontWeight: 600, fontVariantNumeric: 'tabular-nums', color: lit > 0.5 ? ADMIN.brand : ADMIN.label}}>{value}</div>
+      <div style={{fontSize: 22, fontWeight: 600, fontVariantNumeric: 'tabular-nums', color: ADMIN.label}}>{value}</div>
     </div>
   );
 }
@@ -157,7 +148,7 @@ function HugoCard() {
   );
   const visits = VISITS[hugo.reference];
   return (
-    <AbsoluteFill style={{background: ADMIN.background, fontFamily: JOST, color: ADMIN.label}}>
+    <AbsoluteFill style={{background: ADMIN.background, fontFamily: INTER, color: ADMIN.label}}>
       <div style={{padding: `${18 + dy}px 16px`, transform: `translateX(${(1 - shown) * 60}px)`, opacity: shown}}>
         <div style={{display: 'flex', alignItems: 'center', gap: 4, fontSize: 13, color: ADMIN.muted}}>
           {Icon.chevronLeft(15)} Toutes les demandes
@@ -194,9 +185,9 @@ function HugoCard() {
               padding: '3px 8px',
               marginLeft: -8,
               borderRadius: 6,
-              color: history > 0.5 ? ADMIN.brand : ADMIN.muted,
-              background: `rgb(232 194 122 / ${0.14 * history})`,
-              boxShadow: history > 0.01 ? `0 0 ${18 * history}px rgb(232 194 122 / ${0.3 * history})` : 'none',
+              color: history > 0.5 ? ADMIN.label : ADMIN.muted,
+              background: light(0.1 * history),
+              boxShadow: history > 0.01 ? `inset 0 0 0 1px ${light(0.4 * history)}, 0 0 ${18 * history}px ${glow(0.3 * history)}` : 'none',
             }}
           >
             {visits} demandes au club
@@ -229,7 +220,7 @@ const COLUMNS: {title: string; width: number; cell: (row: (typeof NIGHT_FILE)[nu
   {title: 'Demandes au club', width: 128, cell: (r) => String(r.visits)},
 ];
 const FIRST = 92;
-const SHEET = {page: '#ffffff', head: '#f4f4f5', rule: '#e4e4e7', ink: '#18181b', muted: '#71717a', lit: 'rgb(232 194 122 / 0.22)'};
+const SHEET = {page: '#ffffff', head: '#f4f4f5', rule: '#e4e4e7', ink: '#18181b', muted: '#71717a', lit: '#ece5d8'};
 
 function Export() {
   const frame = useCurrentFrame();
@@ -262,7 +253,7 @@ function Export() {
     </div>
   );
   return (
-    <AbsoluteFill style={{background: ADMIN.background, fontFamily: JOST, color: ADMIN.label}}>
+    <AbsoluteFill style={{background: ADMIN.background, fontFamily: INTER, color: ADMIN.label}}>
       <div style={{position: 'absolute', inset: 0, top: dy, overflow: 'hidden'}}>
         <NightPage scroll={326} p1Requests="3 demandes" p1Lit={0} press={0} exportPress={press(frame, EXPORT.at)} />
       </div>
@@ -287,14 +278,14 @@ function Export() {
           boxShadow: '0 10px 30px rgb(0 0 0 / 0.5)',
         }}
       >
-        <span style={{color: GLASS.ok}}>{Icon.download(16)}</span>
+        <span style={{color: ADMIN.label, display: 'inline-flex'}}>{Icon.download(16)}</span>
         <span style={{display: 'flex', flexDirection: 'column'}}>
           <span style={{fontWeight: 500}}>{FILE_NAME}</span>
           <span style={{color: ADMIN.muted, fontSize: 12}}>Téléchargé · 6 demandes</span>
         </span>
       </div>
       {/* the file, opened in the club's spreadsheet */}
-      <div style={{position: 'absolute', left: 0, right: 0, top: dy, bottom: 0, background: SHEET.page, transform: `translateY(${(1 - sheet) * 104}%)`, fontFamily: JOST}}>
+      <div style={{position: 'absolute', left: 0, right: 0, top: dy, bottom: 0, background: SHEET.page, transform: `translateY(${(1 - sheet) * 104}%)`, fontFamily: INTER}}>
         <div style={{height: 56, display: 'flex', alignItems: 'center', gap: 10, padding: '0 14px', borderBottom: `1px solid ${SHEET.rule}`, color: SHEET.ink}}>
           <span style={{color: '#1f7a46'}}>{Icon.file(20)}</span>
           <span style={{display: 'flex', flexDirection: 'column'}}>
@@ -324,7 +315,7 @@ function Export() {
           </div>
         </div>
       </div>
-      <AbsoluteFill style={{background: `rgb(6 4 8 / ${fadeOut})`}} />
+      <AbsoluteFill style={{background: DS.ink, opacity: fadeOut}} />
     </AbsoluteFill>
   );
 }

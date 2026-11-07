@@ -2,12 +2,13 @@
 // drawn after the app's (src/app/admin/page.tsx, src/components/admin/night-tables.tsx): the
 // night, its tables, a table's requests, a buyer's card; on a night that takes offers, the
 // highest one and « Proposer de surenchérir ». Demo data (data.ts). Clients.tsx shows the
-// buyers' Instagram and the night's export.
+// buyers' Instagram and the night's export. Since 2026-11-07 the dashboard takes the app's « Dark
+// Sculpted » tokens as they are (charcoal, ivory, Inter): the films follow, the light where gold was.
 import type {CSSProperties, ReactNode} from 'react';
 import {AbsoluteFill, useCurrentFrame} from 'remotion';
 
 import {NIGHT, OTHER_TABLES, REQUESTS, TABLE, type Reach, type Request} from './data';
-import {ADMIN, euro, GLASS, JOST, tween} from './theme';
+import {ADMIN, DS, euro, glow, INTER, light, tween} from './theme';
 import {Icon, Screen, Tap} from './ui';
 
 const STATUS: Record<string, string> = {Disponible: '#30d158', 'Sur demande': '#ffd60a', Complet: '#8e8e93'};
@@ -112,7 +113,8 @@ function TableRow({label, status, minimum, capacity, requests, lit = 0, pressed 
       style={{
         padding: '12px 14px',
         borderTop: `1px solid ${ADMIN.border}`,
-        background: `rgb(232 194 122 / ${0.1 * lit})`,
+        background: light(0.09 * lit),
+        boxShadow: lit > 0.01 ? `inset 0 0 0 1px ${light(0.4 * lit)}, inset 0 0 18px -6px ${glow(0.4 * lit)}` : undefined,
         display: 'flex',
         flexDirection: 'column',
         gap: 6,
@@ -126,7 +128,7 @@ function TableRow({label, status, minimum, capacity, requests, lit = 0, pressed 
         {euro(minimum)} · {capacity}
       </div>
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center'}}>
-        <span style={{fontSize: 13, color: lit > 0.05 ? ADMIN.brand : ADMIN.muted}}>{requests}</span>
+        <span style={{fontSize: 13, color: lit > 0.05 ? ADMIN.label : ADMIN.muted}}>{requests}</span>
         <div style={{display: 'flex', gap: 6}}>
           <Button small>Modifier</Button>
           <Button small pressed={pressed}>
@@ -205,7 +207,7 @@ export const compact = (n: number) => COMPACT.format(n);
  * interactions, or « Compte privé ». `lit` makes the followers stand out.
  */
 function ReachFigures({reach, lit = 0}: {reach: Reach; lit?: number}) {
-  const figure = (value: string, unit: string, glow = 0) => (
+  const figure = (value: string, unit: string, shine = 0) => (
     <span
       style={{
         display: 'inline-flex',
@@ -215,17 +217,17 @@ function ReachFigures({reach, lit = 0}: {reach: Reach; lit?: number}) {
         padding: '0 8px',
         borderRadius: 6,
         fontSize: 12,
-        border: `1px solid ${glow > 0.01 ? `rgb(232 194 122 / ${0.3 + 0.6 * glow})` : ADMIN.border}`,
-        background: `rgb(232 194 122 / ${0.18 * glow})`,
-        boxShadow: glow > 0.01 ? `0 0 ${20 * glow}px rgb(232 194 122 / ${0.5 * glow})` : 'none',
-        transform: `scale(${1 + 0.14 * glow})`,
+        border: `1px solid ${shine > 0.01 ? light(0.3 + 0.6 * shine) : ADMIN.border}`,
+        background: light(0.1 * shine),
+        boxShadow: shine > 0.01 ? `0 0 ${20 * shine}px ${glow(0.45 * shine)}` : 'none',
+        transform: `scale(${1 + 0.14 * shine})`,
         transformOrigin: 'left center',
         // room for the badge as it grows
-        marginRight: 14 * glow,
+        marginRight: 14 * shine,
         whiteSpace: 'nowrap',
       }}
     >
-      <span style={{fontWeight: 600, color: glow > 0.5 ? ADMIN.brand : ADMIN.label}}>{value}</span>
+      <span style={{fontWeight: 600, color: ADMIN.label}}>{value}</span>
       <span style={{color: ADMIN.muted}}>{unit}</span>
     </span>
   );
@@ -266,7 +268,8 @@ export function RequestRow({
       style={{
         padding: '12px 14px',
         borderTop: `1px solid ${ADMIN.border}`,
-        background: `rgb(232 194 122 / ${0.12 * lit + 0.05 * pressed})`,
+        background: light(0.09 * lit + 0.05 * pressed),
+        boxShadow: lit > 0.01 ? `inset 0 0 0 1px ${light(0.4 * lit)}, inset 0 0 18px -6px ${glow(0.4 * lit)}` : undefined,
       }}
     >
       <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: 8}}>
@@ -303,7 +306,7 @@ function Sheet({shown, children}: {shown: number; children: ReactNode}) {
           transform: `translateX(${(1 - shown) * 330}px)`,
           boxShadow: '-20px 0 60px rgb(0 0 0 / 0.5)',
           overflow: 'hidden',
-          fontFamily: JOST,
+          fontFamily: INTER,
         }}
       >
         <div style={{position: 'absolute', right: 14, top: 18, color: ADMIN.muted}}>{Icon.close(16)}</div>
@@ -442,7 +445,7 @@ export const Board = () => {
   const frame = useCurrentFrame();
   const scroll = tween(frame, [8, 36], [0, 330]);
   const arrived = tween(frame, [ARRIVE, ARRIVE + 10], [0, 1]);
-  const glow = arrived * (1 - tween(frame, [ARRIVE + 30, ARRIVE + 60], [0, 1]));
+  const shine = arrived * (1 - tween(frame, [ARRIVE + 30, ARRIVE + 60], [0, 1]));
   const sheet = tween(frame, [OPEN_REQUESTS.at + 4, OPEN_REQUESTS.at + 20], [0, 1]);
   const menu = tween(frame, [OPEN_SORT.at + 2, OPEN_SORT.at + 10], [0, 1]) * (1 - tween(frame, [PICK_SORT.at + 2, PICK_SORT.at + 8], [0, 1]));
   // the pointer runs down the list before it picks
@@ -461,7 +464,7 @@ export const Board = () => {
       <NightPage
         scroll={scroll}
         p1Requests={arrived > 0.5 ? plural(3) : plural(2)}
-        p1Lit={glow}
+        p1Lit={shine}
         press={press(OPEN_REQUESTS.at)}
       />
       <Tap {...OPEN_REQUESTS} />
@@ -493,7 +496,7 @@ export const Board = () => {
                   <RequestRow
                     request={request}
                     offers={false}
-                    lit={request === camille ? glow : 0}
+                    lit={request === camille ? shine : 0}
                     pressed={request === camille ? press(OPEN_BUYER.at) : 0}
                   />
                 </div>
@@ -533,7 +536,7 @@ export const Board = () => {
           </div>
         </div>
       </AbsoluteFill>
-      <AbsoluteFill style={{background: `rgb(6 4 8 / ${fadeOut})`}} />
+      <AbsoluteFill style={{background: DS.ink, opacity: fadeOut}} />
     </Screen>
   );
 };
@@ -559,7 +562,7 @@ export function ClubScene({ask, send, raise}: {ask?: number; send?: number; rais
   const toast =
     send !== undefined ? tween(frame, [send + 8, send + 18], [0, 1]) * (1 - tween(frame, [send + 46, send + 56], [0, 1])) : 0;
   const raised = raise !== undefined ? tween(frame, [raise, raise + 18], [0, 1]) : 0;
-  const glow = raised * (1 - tween(frame, [(raise ?? 0) + 40, (raise ?? 0) + 70], [0, 1]));
+  const shine = raised * (1 - tween(frame, [(raise ?? 0) + 40, (raise ?? 0) + 70], [0, 1]));
   const press = (at?: number) =>
     at === undefined ? 0 : tween(frame, [at - 5, at], [0, 1]) * (1 - tween(frame, [at + 2, at + 8], [0, 1]));
   const [camille, hugo, ines] = REQUESTS;
@@ -573,12 +576,12 @@ export function ClubScene({ask, send, raise}: {ask?: number; send?: number; rais
     {request: ines, y: rowHeight * 2},
   ];
   return (
-    <AbsoluteFill style={{background: ADMIN.background, fontFamily: JOST, color: ADMIN.label}}>
+    <AbsoluteFill style={{background: ADMIN.background, fontFamily: INTER, color: ADMIN.label}}>
       <div style={{padding: `${22 + dy}px 16px 0`}}>
         <div style={{fontSize: 18, fontWeight: 600}}>Demandes · Table {TABLE.label}</div>
         <div style={{fontSize: 13, color: ADMIN.muted}}>3 demandes · {NIGHT.name} · soirée à offres</div>
         <SortSelect label="Plus gros montant" />
-        <div style={{marginTop: 16, border: `1px solid rgb(232 194 122 / 0.4)`, borderRadius: 12, background: 'rgb(232 194 122 / 0.07)', padding: 14}}>
+        <div style={{marginTop: 16, border: `1px solid ${light(0.32)}`, borderRadius: 12, background: light(0.04), boxShadow: `0 0 18px -6px ${glow(0.35)}`, padding: 14}}>
           <div style={{fontSize: 12, letterSpacing: '0.08em', textTransform: 'uppercase', color: ADMIN.muted}}>Offre la plus haute</div>
           <div style={{fontSize: 28, fontWeight: 600, color: ADMIN.brand, marginTop: 2}}>{euro(top.offer ?? 0)}</div>
           <div style={{fontSize: 13, color: ADMIN.muted}}>{top.reference} · 2 autres demandes en dessous</div>
@@ -595,7 +598,7 @@ export function ClubScene({ask, send, raise}: {ask?: number; send?: number; rais
             key={request.reference}
             style={{position: 'absolute', left: 0, right: 0, top: y - 1, height: rowHeight, background: ADMIN.card, zIndex: request === hugoNow ? 2 : 1}}
           >
-            <RequestRow request={request} offers lit={request === hugoNow ? glow : 0} />
+            <RequestRow request={request} offers lit={request === hugoNow ? shine : 0} />
           </div>
         ))}
       </div>
@@ -649,7 +652,7 @@ export function ClubScene({ask, send, raise}: {ask?: number; send?: number; rais
           boxShadow: '0 10px 30px rgb(0 0 0 / 0.5)',
         }}
       >
-        <span style={{color: GLASS.ok}}>{Icon.check(14)}</span>2 demandeurs prévenus
+        <span style={{color: ADMIN.label, display: 'inline-flex'}}>{Icon.circleCheck(16)}</span>2 demandeurs prévenus
       </div>
     </AbsoluteFill>
   );

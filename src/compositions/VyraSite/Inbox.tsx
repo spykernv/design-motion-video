@@ -4,7 +4,7 @@
 import {AbsoluteFill, Img, staticFile, useCurrentFrame} from 'remotion';
 
 import {NIGHT, REQUESTS, TABLE} from './data';
-import {euro, LUMEN, tween} from './theme';
+import {euro, JOST, LUMEN, tween} from './theme';
 import {Icon, Screen, Tap} from './ui';
 
 export const INBOX_DURATION = 270;
@@ -143,7 +143,7 @@ export const Inbox = () => {
   const open = tween(frame, [OPEN.at + 4, OPEN.at + 20], [0, 1]);
   const scroll = tween(frame, [150, 230], [0, 238]);
   return (
-    <Screen background="#000">
+    <Screen background="#000" font={JOST} tabular>
       <AbsoluteFill>
         <Img
           src={staticFile('vyra-site/wallpaper.jpg')}
